@@ -16,12 +16,14 @@ st.set_page_config(page_title="Screenplay Analyst", layout="wide")
 # login_screen() - Función para manejar autenticación simple sin backend
 
 def login_screen():
-    USUARIOS_PERMITIDOS = {
-        "admin": "cine",
-        "productor": "1234",
-        "guionista": "arte"
-    }
-
+  try:
+        # Esto busca la sección [passwords] en la configuración de la nube
+        USUARIOS_PERMITIDOS = st.secrets["passwords"]
+    except FileNotFoundError:
+        # Si te olvidaste de configurar los secrets, da un error claro
+        st.error("Error: No se han configurado los usuarios en los Secrets.")
+        st.stop()
+        
     if 'logged_in' not in st.session_state:
         st.session_state.logged_in = False
 
@@ -251,3 +253,4 @@ else:
     *Narrativa + Presupuesto (SICA) + D&I.*
 
     """)
+
