@@ -53,7 +53,7 @@ with st.sidebar:
 
 # La app comienza aquí, después de la autenticación. Todo el código relacionado con la lógica de análisis y UI va debajo de esta línea.
 # 1. API KEY
-API_KEY = "AIzaSyABJi2g3tgmV7mh6np0F63MkFp65fLnvJA"
+API_KEY = st.secrets["GOOGLE_API_KEY"] 
 genai.configure(api_key=API_KEY)
 
 # 2. URL FIJA DE SICA
@@ -249,4 +249,5 @@ else:
     st.markdown("""
     **Bienvenido a Screenplay Analyst.**
     *Narrativa + Presupuesto (SICA) + D&I.*
+
     """)
