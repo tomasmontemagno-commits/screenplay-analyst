@@ -118,7 +118,7 @@ def generate_analysis(script_text, sica_text, exchange_rate, include_narrative, 
         --------------------------------------------------
         Formato Markdown:
         ### 1. ANÁLISIS NARRATIVO
-        * Logline, Sinopsis, Crítica (1-10).
+        * Logline, Sinopsis.
         * **Crítica (1-10):** Evaluación de originalidad, estructura, personajes y diálogos.
         * **Referencias:** 5 películas similares.
 
@@ -260,6 +260,7 @@ else:
     *Narrativa + Presupuesto (SICA) + D&I.*
 
     """)
+
 
 
 
