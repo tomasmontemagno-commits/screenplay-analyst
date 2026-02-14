@@ -118,7 +118,8 @@ def generate_analysis(script_text, sica_text, exchange_rate, include_narrative, 
         --------------------------------------------------
         Formato Markdown:
         ### 1. ANÁLISIS NARRATIVO
-        * Logline, Sinopsis, Crítica (1-10), Casting.
+        * Logline, Sinopsis, Crítica (1-10).
+        * **Crítica (1-10):** Evaluación de originalidad, estructura, personajes y diálogos.
         * **Referencias:** 5 películas similares.
 
         AL FINAL DE ESTA SECCIÓN, inserta estos DOS bloques JSON ocultos (usa bloques de código ```json ... ```):
@@ -138,7 +139,9 @@ def generate_analysis(script_text, sica_text, exchange_rate, include_narrative, 
         --------------------------------------------------
         Formato Markdown:
         ### 2. PRODUCCIÓN
-        Genera una Tabla de Presupuesto en USD (Pre, Rodaje, Post) y un Plan de Financiamiento.
+        * **Casting Ideal:** Sugiere actores (preferiblemente mercado Latam/Argentina) para los roles principales.
+        * **Desglose de Locaciones:** Lista las locaciones principales necesarias, describiendo su estética (Look & Feel) y complejidad logística (INT/EXT, Día/Noche).
+        Genera una Tabla de Presupuesto en USD (Pre, Rodaje, Post) y un Plan de Financiamiento potencial.
         """
 
     if include_diversity:
@@ -257,6 +260,7 @@ else:
     *Narrativa + Presupuesto (SICA) + D&I.*
 
     """)
+
 
 
 
