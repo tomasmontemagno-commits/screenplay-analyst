@@ -16,7 +16,7 @@ st.set_page_config(page_title="Screenplay Analyst", layout="wide")
 # login_screen() - Función para manejar autenticación simple sin backend
 
 def login_screen():
-  try:
+    try:
         # Esto busca la sección [passwords] en la configuración de la nube
         USUARIOS_PERMITIDOS = st.secrets["passwords"]
     except FileNotFoundError:
@@ -253,5 +253,6 @@ else:
     *Narrativa + Presupuesto (SICA) + D&I.*
 
     """)
+
 
 
