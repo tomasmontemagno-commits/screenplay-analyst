@@ -23,4 +23,3 @@ https://screenplay-analyst.streamlit.app/
 Para probar la aplicación en vivo, utiliza estas credenciales de invitado:
 * **Usuario:** invitado
 * **Contraseña:** demo
-Web app for instant script analytics
