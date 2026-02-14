@@ -23,7 +23,7 @@ def login_screen():
         # Si te olvidaste de configurar los secrets, da un error claro
         st.error("Error: No se han configurado los usuarios en los Secrets.")
         st.stop()
-        
+    
     if 'logged_in' not in st.session_state:
         st.session_state.logged_in = False
 
@@ -253,4 +253,5 @@ else:
     *Narrativa + Presupuesto (SICA) + D&I.*
 
     """)
+
 
