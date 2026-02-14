@@ -1,0 +1,6 @@
+streamlit
+pdfplumber
+google-generativeai
+requests
+pandas
+altair
