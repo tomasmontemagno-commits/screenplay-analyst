@@ -149,9 +149,13 @@ def generate_analysis(script_text, sica_text, exchange_rate, include_narrative, 
         Formato Markdown:
         ### 3. DIVERSIDAD
         Analiza Test Bechdel y Estereotipos.
-        AL FINAL, inserta este JSON en bloque de código:
+        TAREA DE CÁLCULO:
+        Analiza los personajes que hablan en el guion.
+        Estima el porcentaje REAL de líneas de diálogo dichas por Hombres, Mujeres y Disidencias en ESTE guion específico. No inventes datos genéricos.
+        
+        AL FINAL, inserta el JSON con tus cálculos (debe sumar 100%):
         ```json 
-        { "Hombres": 60, "Mujeres": 30, "Disidencias": 10 } 
+        { "Hombres": XX, "Mujeres": XX, "Disidencias": XX } 
         ```
         """
 
@@ -253,6 +257,7 @@ else:
     *Narrativa + Presupuesto (SICA) + D&I.*
 
     """)
+
 
 
 
