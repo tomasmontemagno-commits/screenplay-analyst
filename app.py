@@ -257,9 +257,10 @@ else:
     st.info("👉 upload your script to begin.")
     st.markdown("""
     **Welcome to Screenplay Analyst.**
-    *Narrative analyses + production analysis + D&I analysis.*
+    *Narrative analysis + production analysis + D&I analysis.*
 
     """)
+
 
 
 
