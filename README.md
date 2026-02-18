@@ -15,7 +15,7 @@ https://screenplay-analyst.streamlit.app/
 ## 🛠️ Stack Tecnológico
 * **Python 3.10+**
 * **Frontend:** Streamlit
-* **AI Model:** Google Gemini 1.5 Flash
+* **AI Model:** Google Gemini 2.5 Flash
 * **Data Viz:** Altair & Pandas
 * **Deployment:** Streamlit Community Cloud
 
