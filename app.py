@@ -146,8 +146,18 @@ def generate_analysis(script_text, sica_text, exchange_rate, production_type, in
         ### 2. PRODUCCIÓN
         * **Casting Ideal:** Sugiere actores (preferiblemente mercado Latam/Argentina) para los roles principales.
         * **Desglose de Locaciones:** Lista las locaciones principales necesarias, describiendo su estética (Look & Feel) y complejidad logística (INT/EXT, Día/Noche).
-        * **SI O SI Genera una Tabla de Presupuesto en USD (Pre, Rodaje, Post). Tiene que ser en formato tabla obligatoriamente. La tabla tiene que contener los campos ETAPA - CARGO - HORAS - COSTO (USD). Y al final debe estar el costo sumarizado. Respectá siempre esta formato de tabla.
+        * **SI O SI Genera una Tabla de Presupuesto en USD (Pre, Rodaje, Post). Tiene que ser en formato tabla obligatoriamente.
         * **Plan de financiamiento potencial.**
+                FORMATO ESTRICTO PARA PRESUPUESTO:
+                - NO uses líneas de separación largas con guiones.
+                - Si usas tabla Markdown, debe tener exactamente 4 columnas:
+                    Sección | Sub-sección | Descripción (Cálculo/Detalle) | Costo Estimado (USD)
+                - Además, AL FINAL de la sección, incluye este JSON obligatorio en bloque ```json```:
+                    [
+                        {"Seccion": "Preproducción", "Subseccion": "Desarrollo", "Descripcion": "Detalle", "CostoUSD": 12000},
+                        {"Seccion": "Rodaje", "Subseccion": "Equipo técnico", "Descripcion": "Detalle", "CostoUSD": 45000}
+                    ]
+                - El JSON debe ser una lista de objetos y CostoUSD debe ser numérico.
         """
         prompt += f"""
         TIPO DE PRODUCCIÓN SELECCIONADO POR EL USUARIO: {production_type.upper()}.
@@ -234,7 +244,7 @@ if uploaded_file is not None:
             
             # --- PROCESAMIENTO ---
             json_matches = re.findall(r'```json\n(.*?)\n```', full_response, re.DOTALL)
-            topics_data, arc_data, diversity_data = None, None, None
+            topics_data, arc_data, diversity_data, budget_data = None, None, None, None
             
             for json_str in json_matches:
                 try:
@@ -242,6 +252,7 @@ if uploaded_file is not None:
                     if isinstance(data, list) and len(data) > 0:
                         if "Tema" in data[0]: topics_data = data
                         elif "Alegría" in data[0] or "Tensión" in data[0]: arc_data = data
+                        elif "Seccion" in data[0] and "CostoUSD" in data[0]: budget_data = data
                     elif isinstance(data, dict): diversity_data = data
                 except: continue
             
@@ -249,6 +260,14 @@ if uploaded_file is not None:
             
             # MOSTRAR TEXTO
             st.markdown(text_display)
+
+            if check_produccion and budget_data:
+                st.divider()
+                st.subheader("💵 Presupuesto estructurado")
+                df_budget = pd.DataFrame(budget_data)
+                if "CostoUSD" in df_budget.columns:
+                    df_budget["CostoUSD"] = pd.to_numeric(df_budget["CostoUSD"], errors="coerce")
+                st.dataframe(df_budget, use_container_width=True)
             
             # --- GRÁFICOS ---
             if check_narrativo and topics_data:
@@ -291,6 +310,7 @@ else:
     *Narrative analysis + production analysis + D&I analysis.*
 
     """)
+
 
 
 
