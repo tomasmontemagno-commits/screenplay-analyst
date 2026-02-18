@@ -91,7 +91,12 @@ def retry_request(model, prompt, retries=3):
             raise e
     raise Exception("Too many API request. Try again later.")
 
-def generate_analysis(script_text, sica_text, exchange_rate, include_narrative, include_production, include_diversity):
+def set_unique_production_type(selected_type):
+    st.session_state.prod_chica = selected_type == "Small"
+    st.session_state.prod_media = selected_type == "Medium"
+    st.session_state.prod_grande = selected_type == "Big"
+
+def generate_analysis(script_text, sica_text, exchange_rate, production_type, include_narrative, include_production, include_diversity):
     model = genai.GenerativeModel('gemini-2.5-flash')
 
     # --- ESTRUCTURA DE PROMPT REFORZADA ---
@@ -141,10 +146,14 @@ def generate_analysis(script_text, sica_text, exchange_rate, include_narrative, 
         ### 2. PRODUCCIÓN
         * **Casting Ideal:** Sugiere actores (preferiblemente mercado Latam/Argentina) para los roles principales.
         * **Desglose de Locaciones:** Lista las locaciones principales necesarias, describiendo su estética (Look & Feel) y complejidad logística (INT/EXT, Día/Noche).
-        * **SI O SI Genera una Tabla de Presupuesto en USD (Pre, Rodaje, Post). Tiene que ser en formato tabla obligatoriamente. El presupuesto tiene que ser moderado. NO EXAGERADO, NO MUY BAJO. Tiene que ser estándar, considerando una producción mediana. También tiene que ser consistente con todas las consultas. No puede ser un presupuesto muy distinto en consultas distintas.**
+        * **SI O SI Genera una Tabla de Presupuesto en USD (Pre, Rodaje, Post). Tiene que ser en formato tabla obligatoriamente.
         * **Plan de financiamiento potencial.**
         """
-
+        prompt += f"""
+        TIPO DE PRODUCCIÓN SELECCIONADO POR EL USUARIO: {production_type.upper()}.
+        Ajusta todo el presupuesto, alcance de recursos, tamaño de equipo, complejidad técnica y estrategia de financiamiento al tipo seleccionado.
+        No propongas un presupuesto de producción grande si el tipo es chica, ni uno de producción chica si el tipo es grande.
+        """
     if include_diversity:
         prompt += """
         \n--------------------------------------------------
@@ -176,8 +185,28 @@ with st.sidebar:
     check_narrativo = st.checkbox("Narrative Analysis", value=True)
     check_produccion = st.checkbox("Production Analysis", value=True)
     check_diversity = st.checkbox("D&I Analysis", value=False)
+
+    if "prod_chica" not in st.session_state:
+        st.session_state.prod_chica = False
+    if "prod_media" not in st.session_state:
+        st.session_state.prod_media = True
+    if "prod_grande" not in st.session_state:
+        st.session_state.prod_grande = False
+
+    tipo_produccion = "media"
     if check_produccion:
         dolar_cotizacion = st.number_input("USD value", value=1250)
+        st.markdown("**Production type**")
+        st.checkbox("Small", key="prod_chica", on_change=set_unique_production_type, args=("Small",))
+        st.checkbox("Medium", key="prod_media", on_change=set_unique_production_type, args=("Medium",))
+        st.checkbox("Big", key="prod_grande", on_change=set_unique_production_type, args=("Big",))
+
+        if st.session_state.prod_grande:
+            tipo_produccion = "Big"
+        elif st.session_state.prod_chica:
+            tipo_produccion = "Small"
+        else:
+            tipo_produccion = "Medium"
 
 st.title("🎬 Screenplay Analyst")
 
@@ -199,6 +228,7 @@ if uploaded_file is not None:
         try:
             full_response = generate_analysis(
                 script_text, sica_data, dolar_cotizacion if check_produccion else 0,
+                tipo_producción,
                 check_narrativo, check_produccion, check_diversity
             )
             
@@ -261,6 +291,7 @@ else:
     *Narrative analysis + production analysis + D&I analysis.*
 
     """)
+
 
 
 
