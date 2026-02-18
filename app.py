@@ -141,7 +141,7 @@ def generate_analysis(script_text, sica_text, exchange_rate, include_narrative, 
         ### 2. PRODUCCIÓN
         * **Casting Ideal:** Sugiere actores (preferiblemente mercado Latam/Argentina) para los roles principales.
         * **Desglose de Locaciones:** Lista las locaciones principales necesarias, describiendo su estética (Look & Feel) y complejidad logística (INT/EXT, Día/Noche).
-        * **SI O SI Genera una Tabla de Presupuesto en USD (Pre, Rodaje, Post). Tiene que ser en formato tabla obligatoriamente.**
+        * **SI O SI Genera una Tabla de Presupuesto en USD (Pre, Rodaje, Post). Tiene que ser en formato tabla obligatoriamente. El presupuesto tiene que ser moderado. NO EXAGERADO, NO MUY BAJO. Tiene que ser estándar, considerando una producción mediana. También tiene que ser consistente con todas las consultas. No puede ser un presupuesto muy distinto en consultas distintas.**
         * **Plan de financiamiento potencial.**
         """
 
@@ -261,6 +261,7 @@ else:
     *Narrative analysis + production analysis + D&I analysis.*
 
     """)
+
 
 
 
