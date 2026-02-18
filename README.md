@@ -23,7 +23,4 @@
 
 ## 🔐 Demo Credentials
 
-To test the live application, please use the following guest credentials:
-
----
-*Developed by Tomás Montemagno*
+To test the live application, ask me for a guest user and password
