@@ -228,7 +228,7 @@ if uploaded_file is not None:
         try:
             full_response = generate_analysis(
                 script_text, sica_data, dolar_cotizacion if check_produccion else 0,
-                tipo_producción,
+                tipo_produccion,
                 check_narrativo, check_produccion, check_diversity
             )
             
@@ -291,6 +291,7 @@ else:
     *Narrative analysis + production analysis + D&I analysis.*
 
     """)
+
 
 
 
