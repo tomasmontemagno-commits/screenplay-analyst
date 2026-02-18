@@ -1,25 +1,29 @@
 # 🎬 Screenplay Analyst AI
 
-Aplicación inteligente que utiliza **Google Gemini 2.5 flash** para analizar guiones de cine, generando reportes narrativos, estimaciones financieras y análisis de diversidad (D&I) en segundos.
+*An intelligent application powered by Google Gemini 2.5 Flash that analyzes film screenplays, generating narrative reports, financial estimates, and Diversity & Inclusion (D&I) analyses in seconds.**
 
-https://screenplay-analyst.streamlit.app/
+👉 **[Try the Live App Here](https://screenplay-analyst.streamlit.app/)**
 
-## 🚀 Features Principales
-* **Análisis Narrativo:** Resumen, logline y críticas automáticas.
-* **Visualización de Datos:**
-    * *Electrocardiograma Emocional:* Gráfico de líneas interactivo de la tensión vs. emoción.
-    * *ADN Temático:* Gráfico de barras apiladas sobre los tópicos de conversación.
-* **Presupuesto:** Estimación de costos basada en la escala salarial oficial (SICA).
-* **Seguridad:** Sistema de login integrado.
+## 🚀 Key Features
 
-## 🛠️ Stack Tecnológico
-* **Python 3.10+**
+* **Narrative Analysis:** Automatic generation of summaries, loglines, and critiques.
+* **Data Visualization:**
+    * **Emotional ECG:** Interactive line chart tracking the script's Tension vs. Emotion curves.
+    * **Thematic DNA:** Stacked bar charts visualizing the dominant conversation topics.
+* **Budgeting:** Cost estimation based on official industry wage scales (SICA).
+* **Security:** Integrated authentication and login system.
+
+## 🛠️ Tech Stack
+
+* **Language:** Python 3.10+
 * **Frontend:** Streamlit
-* **AI Model:** Google Gemini 2.5 Flash
+* **AI Model:** Google Gemini 2.5 Flash (via API)
 * **Data Viz:** Altair & Pandas
 * **Deployment:** Streamlit Community Cloud
 
-## 🔐 Credenciales de Demo
-Para probar la aplicación en vivo, utiliza estas credenciales de invitado:
-* **Usuario:** invitado
-* **Contraseña:** demo
+## 🔐 Demo Credentials
+
+To test the live application, please use the following guest credentials:
+
+---
+*Developed by Tomás Montemagno*
