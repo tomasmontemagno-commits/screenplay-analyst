@@ -60,6 +60,7 @@ genai.configure(api_key=API_KEY)
 
 # 2. URL FIJA DE SICA
 SICA_URL = "https://www.sicacine.org.ar/docs/Salarios%20Largometrajes%20Nacionales%20Febrero%2026.pdf"
+MAX_PDF_SIZE_MB = 300
 
 # --- FUNCIONES ---
 
@@ -78,6 +79,15 @@ def fetch_sica_data():
         return extract_text_from_bytes(response.content) if response.status_code == 200 else None
     except:
         return None
+
+def fetch_pdf_from_url(pdf_url):
+    try:
+        headers = {'User-Agent': 'Mozilla/5.0'}
+        response = requests.get(pdf_url, headers=headers, timeout=25)
+        response.raise_for_status()
+        return response.content, None
+    except Exception as e:
+        return None, f"No se pudo descargar el PDF desde URL: {e}"
 
 def retry_request(model, prompt, retries=3):
     for attempt in range(retries):
@@ -190,6 +200,8 @@ def generate_analysis(script_text, sica_text, exchange_rate, production_type, in
 with st.sidebar:
     st.header("📂 1. Load script")
     uploaded_file = st.file_uploader("Load the PDF", type="pdf")
+    pdf_url = st.text_input("or paste a PDF URL (optional)")
+    st.caption("Tip (mobile): if upload fails, use a direct PDF URL.")
     st.divider()
     st.header("⚙️ 2. Configuration")
     check_narrativo = st.checkbox("Narrative Analysis", value=True)
@@ -220,11 +232,29 @@ with st.sidebar:
 
 st.title("🎬 Screenplay Analyst")
 
+pdf_bytes = None
+
 if uploaded_file is not None:
-    try:
-        with pdfplumber.open(uploaded_file) as pdf:
-            script_text = "".join([page.extract_text() or "" for page in pdf.pages])
-    except: st.error("Error PDF"); st.stop()
+    pdf_bytes = uploaded_file.getvalue()
+    file_size_mb = len(pdf_bytes) / (1024 * 1024)
+    if file_size_mb > MAX_PDF_SIZE_MB:
+        st.error(f"PDF demasiado grande ({file_size_mb:.1f} MB). Máximo permitido: {MAX_PDF_SIZE_MB} MB.")
+        st.stop()
+elif pdf_url:
+    pdf_bytes, url_error = fetch_pdf_from_url(pdf_url)
+    if url_error:
+        st.error(url_error)
+        st.stop()
+    file_size_mb = len(pdf_bytes) / (1024 * 1024)
+    if file_size_mb > MAX_PDF_SIZE_MB:
+        st.error(f"PDF desde URL demasiado grande ({file_size_mb:.1f} MB). Máximo permitido: {MAX_PDF_SIZE_MB} MB.")
+        st.stop()
+
+if pdf_bytes is not None:
+    script_text = extract_text_from_bytes(pdf_bytes)
+    if script_text.startswith("Error leyendo PDF"):
+        st.error(script_text)
+        st.stop()
 
     if st.button("🚀 Create report", type="primary"):
         
@@ -304,13 +334,12 @@ if uploaded_file is not None:
         except Exception as e:
             st.error(f"Error: {e}")
 else:
-    st.info("👉 upload your script to begin.")
+    st.info("👉 upload your script (or use a PDF URL) to begin.")
     st.markdown("""
     **Welcome to Screenplay Analyst.**
     *Narrative analysis + production analysis + D&I analysis.*
 
     """)
-
 
 
 
