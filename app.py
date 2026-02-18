@@ -30,25 +30,25 @@ def login_screen():
     if not st.session_state.logged_in:
         col1, col2, col3 = st.columns([1, 2, 1])
         with col2:
-            st.markdown("## 🔒 Acceso Restringido")
-            st.info("Esta herramienta es privada. Por favor ingresa tus credenciales.")
+            st.markdown("## 🔒 Restricted access")
+            st.info("This tool is private. Please enter your credentials.")
             
-            username = st.text_input("Usuario")
-            password = st.text_input("Contraseña", type="password")
+            username = st.text_input("User")
+            password = st.text_input("Password", type="password")
             
-            if st.button("Ingresar al Sistema", type="primary"):
+            if st.button("Login", type="primary"):
                 if username in USUARIOS_PERMITIDOS and USUARIOS_PERMITIDOS[username] == password:
                     st.session_state.logged_in = True
-                    st.success("¡Acceso concedido!")
+                    st.success("¡Access granted!")
                     st.rerun()
                 else:
-                    st.error("Usuario o contraseña incorrectos.")
+                    st.error("Incorrect user or password")
         st.stop()
 
 login_screen()
 
 with st.sidebar:
-    if st.button("🔒 Cerrar Sesión"):
+    if st.button("🔒 Log out"):
         st.session_state.logged_in = False
         st.rerun()
 
@@ -85,11 +85,11 @@ def retry_request(model, prompt, retries=3):
             return model.generate_content(prompt)
         except Exception as e:
             if "429" in str(e):
-                st.toast(f"⏳ Tráfico alto. Esperando 60s... ({attempt+1}/{retries})", icon="⚠️")
+                st.toast(f"⏳ High traffic. Waiting 60s... ({attempt+1}/{retries})", icon="⚠️")
                 time.sleep(60)
                 continue
             raise e
-    raise Exception("API saturada. Intenta más tarde.")
+    raise Exception("Too many API request. Try again later.")
 
 def generate_analysis(script_text, sica_text, exchange_rate, include_narrative, include_production, include_diversity):
     model = genai.GenerativeModel('gemini-2.5-flash')
@@ -168,15 +168,15 @@ def generate_analysis(script_text, sica_text, exchange_rate, include_narrative, 
 
 # --- INTERFAZ ---
 with st.sidebar:
-    st.header("📂 1. Cargar Guion")
-    uploaded_file = st.file_uploader("Sube el PDF", type="pdf")
+    st.header("📂 1. Load script")
+    uploaded_file = st.file_uploader("Load the PDF", type="pdf")
     st.divider()
-    st.header("⚙️ 2. Configuración")
-    check_narrativo = st.checkbox("Análisis Narrativo", value=True)
-    check_produccion = st.checkbox("Producción & Presupuesto", value=True)
-    check_diversity = st.checkbox("D&I (Género)", value=False)
+    st.header("⚙️ 2. Configuration")
+    check_narrativo = st.checkbox("Narrative Analysis", value=True)
+    check_produccion = st.checkbox("Production Analysis", value=True)
+    check_diversity = st.checkbox("D&I Analysis", value=False)
     if check_produccion:
-        dolar_cotizacion = st.number_input("Cotización Dólar", value=1250)
+        dolar_cotizacion = st.number_input("USD value", value=1250)
 
 st.title("🎬 Screenplay Analyst")
 
@@ -186,11 +186,11 @@ if uploaded_file is not None:
             script_text = "".join([page.extract_text() or "" for page in pdf.pages])
     except: st.error("Error PDF"); st.stop()
 
-    if st.button("🚀 Generar Informe", type="primary"):
+    if st.button("🚀 Create report", type="primary"):
         
         # --- FIX BUG 1: Validar selección ---
         if not (check_narrativo or check_produccion or check_diversity):
-            st.error("⚠️ Selecciona al menos una opción para analizar.")
+            st.error("⚠️ Selected at least one option to begin.")
             st.stop()
             
         sica_data = fetch_sica_data() if check_produccion else ""
@@ -254,12 +254,13 @@ if uploaded_file is not None:
         except Exception as e:
             st.error(f"Error: {e}")
 else:
-    st.info("👉 Sube tu guion para comenzar.")
+    st.info("👉 upload your script to begin.")
     st.markdown("""
-    **Bienvenido a Screenplay Analyst.**
-    *Narrativa + Presupuesto (SICA) + D&I.*
+    **Welcome to Screenplay Analyst.**
+    *Narrative analyses + production analysis + D&I analysis.*
 
     """)
+
 
 
 
